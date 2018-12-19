@@ -1,3 +1,74 @@
-<p>
-  user-form works!
-</p>
+<div class="container shadow mt-5"><mat-progress-bar mode="indeterminate" *ngIf="isProgress"></mat-progress-bar>
+<mat-card>
+  <form *ngIf="!loaderFlag" name="form" #formModel="ngForm" (ngSubmit)="formModel.form.valid && submit()" novalidate>
+    <mat-card-header>
+      <mat-card-title>
+        <h4>{{userForm.formHeader}}</h4>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field *ngIf="userForm.formType==='signup'">
+        <input #nameControl="ngModel" id="nameId" name="userName" [(ngModel)]="user.name" matInput placeholder="Name">
+      </mat-form-field>
+      <mat-form-field *ngIf="userForm.formType!=='resetpassword'">
+        <input #emailControl="ngModel" id="email" name="email" [(ngModel)]="user.email" matInput placeholder="Email"
+          required>
+        <mat-error *ngIf="formModel.submitted && !user.email">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="userForm.formType!=='forgetpassword'">
+        <input name="passwordName" #passwordControl="ngModel" id="passwordId" [(ngModel)]="user.password" matInput
+          placeholder="Password" [type]="hide ? 'password' : 'text'" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="formModel.submitted && !user.password">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <a  *ngIf="userForm.formType==='signin'" [routerLink]="['user/forgetpassword']" routerLinkActive="router-link-active" >Forgot Password?</a>
+      <mat-form-field *ngIf="userForm.formType==='resetpassword'">
+        <input name="newPasswordName" #newPasswordControl="ngModel" id="newPasswordId" [(ngModel)]="user.newPassword"
+          matInput placeholder="New Password" [type]="hide ? 'password' : 'text'" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="formModel.submitted && !user.newPassword">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="userForm.formType==='resetpassword'">
+        <input name="confirmPasswordName" #confirmPasswordControl="ngModel" id="confirmPasswordId" [(ngModel)]="user.confirmPassword"
+          matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="formModel.submitted && !user.confirmPassword">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="userForm.formType==='signup'">
+        <input #mobileNoControl="ngModel" id="mobileNoId" name="mobileNoName" [(ngModel)]="user.mobileNo" matInput
+          placeholder="Mobile No">
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+      <mat-form-field *ngIf="userForm.formType==='signup'">
+        <mat-select placeholder="Select City" name="cityName" id="cityId" #cityControl="ngModel" [(ngModel)]="user.city">
+          <mat-option *ngFor="let city of cityList" value="city">{{city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="p2" *ngIf="userForm.formType==='signup'">
+        <label>Gender:</label>
+          <mat-radio-group class="ml-2" name="genderName" id="genderId" [(ngModel)]="user.gender">
+            <mat-radio-button value="male"><span>Male</span></mat-radio-button>
+            <mat-radio-button class="ml-2" value="female"><span>Female</span></mat-radio-button>
+          </mat-radio-group>
+      </div>
+      <mat-form-field *ngIf="userForm.formType==='signup'">
+          <input name="dobPicker" matInput [matDatepicker]="dob" placeholder="Date of Birth" [(ngModel)]="user.age">
+          <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+          <mat-datepicker #dob></mat-datepicker>
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button type="submit" mat-raised-button color="primary">{{userForm.submitButtonLabel}}</button>
+      <button type="button" mat-raised-button color="primary" (click)="changeForm()">{{userForm.extraButtonLabel}}</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
+</div>

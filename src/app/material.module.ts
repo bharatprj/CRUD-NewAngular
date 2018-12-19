@@ -17,7 +17,10 @@ import {
    MatCheckboxModule,
    MatFormFieldModule,
    MatProgressSpinnerModule, MatToolbarModule, MatSidenavModule,
-   MatPaginatorModule
+   MatPaginatorModule,
+   MatDatepickerModule,
+   MatNativeDateModule,
+   MatProgressBarModule
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -41,7 +44,10 @@ import { LayoutModule } from '@angular/cdk/layout';
       MatProgressSpinnerModule,
       LayoutModule,
       MatToolbarModule,
-      MatSidenavModule
+      MatSidenavModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatProgressBarModule
    ],
    exports: [
       MatListModule,
@@ -61,7 +67,10 @@ import { LayoutModule } from '@angular/cdk/layout';
       MatProgressSpinnerModule,
       LayoutModule,
       MatToolbarModule,
-      MatSidenavModule
+      MatSidenavModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatProgressBarModule
    ]
 
 })

@@ -5,6 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared.module';
 import { AppChildModule } from './app-child/app-child.module';
+import { UserFormDataResolver } from './app-child/user-form/user-form-data.resolver';
+import { DataService } from './services/data.service';
+import { CommonService } from './services/common.service';
+import { ToastMessageService } from './services/toast-message.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,7 @@ import { AppChildModule } from './app-child/app-child.module';
     SharedModule
   ],
   exports: [],
-  providers: [],
+  providers: [UserFormDataResolver, DataService, CommonService, ToastMessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
