@@ -1,12 +1,19 @@
 <div class="container shadow mt-5"><mat-progress-bar mode="indeterminate" *ngIf="isProgress"></mat-progress-bar>
 <mat-card>
-  <form *ngIf="!loaderFlag" name="form" #formModel="ngForm" (ngSubmit)="formModel.form.valid && submit()" novalidate>
+  <form name="form" #formModel="ngForm" (ngSubmit)="formModel.form.valid && submit()" novalidate>
     <mat-card-header>
       <mat-card-title>
         <h4>{{userForm.formHeader}}</h4>
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
+        <div *ngIf="userForm.formType==='signup'" id="drop_up"  style=" margin: auto;
+                height: 110px ;
+                border-radius: 55px;
+                width: 110px ;">
+          <img title="Drop Profile Picture" (click)="fileTypeInput.click()"  style="all:inherit;" id="profileImage" src="../../../assets/svg-image/sharp-portrait-24px.svg">
+          <input type="file" #fileTypeInput id="FileUpload1" (change)="uploadImge($event)" style="display: none" />
+        </div>
       <mat-form-field *ngIf="userForm.formType==='signup'">
         <input #nameControl="ngModel" id="nameId" name="userName" [(ngModel)]="user.name" matInput placeholder="Name">
       </mat-form-field>
@@ -25,7 +32,7 @@
           Password is <strong>required</strong>
         </mat-error>
       </mat-form-field>
-      <a  *ngIf="userForm.formType==='signin'" [routerLink]="['user/forgetpassword']" routerLinkActive="router-link-active" >Forgot Password?</a>
+      <a  *ngIf="userForm.formType==='signin'" [routerLink]="['/user/forgetpassword']" routerLinkActive="router-link-active" >Forgot Password?</a>
       <mat-form-field *ngIf="userForm.formType==='resetpassword'">
         <input name="newPasswordName" #newPasswordControl="ngModel" id="newPasswordId" [(ngModel)]="user.newPassword"
           matInput placeholder="New Password" [type]="hide ? 'password' : 'text'" required>
@@ -48,9 +55,12 @@
         <mat-icon matSuffix>phone</mat-icon>
       </mat-form-field>
       <mat-form-field *ngIf="userForm.formType==='signup'">
-        <mat-select placeholder="Select City" name="cityName" id="cityId" #cityControl="ngModel" [(ngModel)]="user.city">
-          <mat-option *ngFor="let city of cityList" value="city">{{city}}</mat-option>
-        </mat-select>
+        <input type="text" placeholder="Select City" aria-label="Number" name="cityName" id="cityId" #cityControl="ngModel" [(ngModel)]="user.city" matInput  [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let city of cityList" value="city" [value]="city">
+            {{city}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
       <div class="p2" *ngIf="userForm.formType==='signup'">
         <label>Gender:</label>
@@ -60,15 +70,22 @@
           </mat-radio-group>
       </div>
       <mat-form-field *ngIf="userForm.formType==='signup'">
-          <input name="dobPicker" matInput [matDatepicker]="dob" placeholder="Date of Birth" [(ngModel)]="user.age">
+          <input name="dobPicker" matInput [matDatepicker]="dob" placeholder="Date of Birth" [(ngModel)]="user.dob">
           <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
           <mat-datepicker #dob></mat-datepicker>
         </mat-form-field>
     </mat-card-content>
-    <mat-card-actions>
-      <button type="submit" mat-raised-button color="primary">{{userForm.submitButtonLabel}}</button>
-      <button type="button" mat-raised-button color="primary" (click)="changeForm()">{{userForm.extraButtonLabel}}</button>
+    <mat-card-actions class="d-flex flex-wrap">
+      <button type="submit" mat-raised-button color="primary"  matTooltip="Click to Submit Form"
+      aria-label="Button that displays a tooltip for a submit button">{{userForm.submitButtonLabel}}</button>
+      <button type="button" mat-raised-button color="primary" [matTooltip]="message"
+      aria-label="Button that displays a tooltip for extra button" (click)="changeForm()">{{userForm.extraButtonLabel}}</button>
+      <div class="g-signin2" data-onsuccess="onSignIn"  matTooltip="Click to Sign In With Google Account"></div>
     </mat-card-actions>
   </form>
 </mat-card>
 </div>
+
+
+<!-- <div id="drop_up"  style="border: 1px solid black;height: 400px;width: 500px;">gg
+  </div> -->

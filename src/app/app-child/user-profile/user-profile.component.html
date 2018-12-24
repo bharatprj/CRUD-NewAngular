@@ -1,3 +1,16 @@
-<p>
-  user-profile works!
-</p>
+
+<mat-card class="">
+  <mat-card-header>
+    <mat-card-title>Shiba Inu</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image src="" alt="">
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-label>Name</mat-label><mat-list-item role="listitem">{{user.name}}</mat-list-item>
+      <mat-label>Email</mat-label><mat-list-item role="listitem">{{user.email}}</mat-list-item>
+      <mat-label>Mobile No</mat-label><mat-list-item role="listitem">{{user.mobileNo}}</mat-list-item>
+      <mat-label>City</mat-label><mat-list-item role="listitem">{{user.city}}</mat-list-item>
+      <mat-label>Dob</mat-label><mat-list-item role="listitem">{{user.dob}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

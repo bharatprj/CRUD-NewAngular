@@ -10,7 +10,9 @@ export class AppComponent implements OnInit {
   constructor(private _dataservice: DataService) {
   }
   ngOnInit(): void {
-    // const id = JSON.parse(localStorage.getItem('user_id'));
-    // this._dataservice.intialiseUserInfo(id);
+    if (!this._dataservice.userInfo) {
+      const id = JSON.parse(localStorage.getItem('user_id'));
+      this._dataservice.intialiseUserInfo(id);
+    }
   }
 }

@@ -9,6 +9,9 @@ import { UserFormDataResolver } from './app-child/user-form/user-form-data.resol
 import { DataService } from './services/data.service';
 import { CommonService } from './services/common.service';
 import { ToastMessageService } from './services/toast-message.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptorService } from './token.interceptor';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { ToastMessageService } from './services/toast-message.service';
     SharedModule
   ],
   exports: [],
-  providers: [UserFormDataResolver, DataService, CommonService, ToastMessageService],
+  providers: [UserFormDataResolver, DataService, CommonService, ToastMessageService, AuthGuard,
+     TokenInterceptorService, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

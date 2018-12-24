@@ -6,10 +6,15 @@ import { nextTick } from 'q';
 export class TokenInterceptorService implements HttpInterceptor {
   constructor(private injector: Injector) { }
   intercept(req, next) {
-    const tokenizedReq = req.clone({
-      headers: req.headers.set('Authorization', 'bearer ' + JSON.parse(localStorage.getItem('user_tokenn')))
-    });
-    return next.handle(tokenizedReq);
+    if (!req.url.includes('user/signin')) {
+      const token = JSON.parse(localStorage.getItem('user_token'));
+      const tokenizedReq = req.clone({
+        headers: req.headers.set('Authorization', 'bearer ' + token)
+      });
+      return next.handle(tokenizedReq);
+    } else {
+      return next.handle(req);
+    }
   }
 }
 

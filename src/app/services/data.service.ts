@@ -11,6 +11,7 @@ isLogin: Boolean = false;
   constructor(public _commonservice: CommonService) {
 
    }
+  // intialising user info
   intialiseUserInfo(id) {
     this._commonservice.getUserInfo(id).subscribe((response) => {
       this.isLogin = true;

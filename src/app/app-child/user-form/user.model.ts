@@ -1,6 +1,6 @@
 export interface User {
    name?: string;
-   age?: any;
+   dob?: any;
    email?: string;
    password?: string;
    confirmPassword?: string;
@@ -8,6 +8,7 @@ export interface User {
    gender?: string;
    city?: string;
    mobileNo?: Number;
+   image?: File;
 }
 export interface UserForm {
    formType: string;
