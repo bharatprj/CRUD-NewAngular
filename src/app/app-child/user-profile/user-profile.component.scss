@@ -1,0 +1,27 @@
+
+.profileBackground{
+   background: url("../../../assets/jpeg-png-image/user-profile-bg.jpg");
+   height: 300px;
+}
+img{
+   height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 1px solid black;
+    position: relative;
+    top: 25%;
+    left: 43%;
+}
+ul{
+   list-style-type: none;
+   padding-left: 0%;
+}
+table{
+   width: 100%;
+}
+
+@media(max-width:700px){
+.container{
+   width: 100%;
+}
+}

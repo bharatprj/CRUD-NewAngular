@@ -42,5 +42,11 @@ function setUserFormData(type) {
          submitButtonLabel: 'Submit',
          extraButtonLabel: 'Sign In'
       };
+      case 'edit': return {
+         formType: 'edit',
+         formHeader: 'Edit Profile',
+         submitButtonLabel: 'Update',
+         extraButtonLabel: 'Discard'
+      };
    }
 }

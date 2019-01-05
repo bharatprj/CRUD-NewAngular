@@ -25,10 +25,12 @@ import {
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
    declarations: [],
    imports: [
+      MatTableModule,
       MatListModule,
       MatPaginatorModule,
       MatCardModule,
@@ -53,6 +55,7 @@ import { MatDialogModule } from '@angular/material/dialog';
       MatAutocompleteModule,
    ],
    exports: [
+      MatTableModule,
       MatAutocompleteModule,
       MatListModule,
       MatPaginatorModule,

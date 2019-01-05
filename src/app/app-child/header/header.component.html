@@ -1,3 +1,66 @@
-<p>
-  header works!
-</p>
+<mat-card class="header-style d-inline-flex">
+  <ul class="d-inline-flex mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Home</a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li>
+      <button mat-button [matMenuTriggerFor]="animals" class="button-text">Index</button>
+      <mat-menu #animals="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
+        <button mat-menu-item [matMenuTriggerFor]="invertebrates">Invertebrates</button>
+      </mat-menu>
+      <mat-menu #vertebrates="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="fish">Fishes</button>
+        <button mat-menu-item [matMenuTriggerFor]="amphibians">Amphibians</button>
+        <button mat-menu-item [matMenuTriggerFor]="reptiles">Reptiles</button>
+      </mat-menu>
+      <mat-menu #invertebrates="matMenu">
+        <button mat-menu-item>Insects</button>
+        <button mat-menu-item>Molluscs</button>
+        <button mat-menu-item>Crustaceans</button>
+      </mat-menu>
+      <mat-menu #fish="matMenu">
+        <button mat-menu-item>Baikal oilfish</button>
+        <button mat-menu-item>Bala shark</button>
+        <button mat-menu-item>Ballan wrasse</button>
+      </mat-menu>
+      <mat-menu #amphibians="matMenu">
+        <button mat-menu-item>Sonoran desert toad</button>
+        <button mat-menu-item>Western toad</button>
+      </mat-menu>
+      <mat-menu #reptiles="matMenu">
+        <button mat-menu-item>Banded Day Gecko</button>
+        <button mat-menu-item>Banded Gila Monster</button>
+      </mat-menu>
+    </li> -->
+  </ul>
+  <!-- <form class="form-inline" style="align-self: flex-end;">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+  <button *ngIf="_dataservice.isLogin|async" class="logout-align" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button (click)="_dataservice.removeUserAccount()" mat-menu-item *ngIf="_dataservice.isProfilePage;else profileButtonRef">
+      <mat-icon>delete_forever</mat-icon>
+      <span>Remove Account</span>
+    </button>
+    <ng-template #profileButtonRef>
+      <button *ngIf="_dataservice.userInfo|async; let info" mat-menu-item [routerLink]="['profile',info?._id]" routerLinkActive="router-link-active">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile</span>
+      </button></ng-template>
+      <button [routerLink]="['account/edit']" routerLinkActive="router-link-active" mat-menu-item *ngIf="_dataservice.isProfilePage">
+        <mat-icon>edit</mat-icon>
+        <span>Edit Account</span>
+      </button>
+    <button mat-menu-item (click)="_dataservice.logOut()">
+      <mat-icon>voicemail</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+  </mat-card>

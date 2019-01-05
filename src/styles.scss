@@ -8,3 +8,18 @@
 .mat-card-header-text{
    margin: auto !important;
 }
+body{
+   background-color: azure ;
+}
+
+@media(max-width: 1000px){
+   body{
+      background-color: cyan !important;
+   }
+}
+
+@media(max-width: 770px){
+   body{
+      background-color: red !important;
+   }
+}

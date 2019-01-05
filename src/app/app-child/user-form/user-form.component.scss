@@ -8,8 +8,14 @@ mat-card{
    padding: 5%;
    padding-bottom: 1%;
 }
+#drop_up {
+   margin: auto;
+   height: 110px ;
+   border-radius: 55px;
+   width: 110px ;
+}
 mat-card-actions{
-   // text-align: center;
+   text-align: center;
 }
 @media(max-width:700px){
 .container{

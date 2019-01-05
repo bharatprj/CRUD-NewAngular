@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +8,8 @@ import { DataService } from './services/data.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private _dataservice: DataService) {
+  constructor() {
   }
   ngOnInit(): void {
-    if (!this._dataservice.userInfo) {
-      const id = JSON.parse(localStorage.getItem('user_id'));
-      this._dataservice.intialiseUserInfo(id);
-    }
   }
 }

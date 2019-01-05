@@ -1,10 +1,12 @@
-import { Component, OnInit, OnChanges, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnChanges, ElementRef, AfterViewInit } from '@angular/core';
 import { User, UserForm } from './user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { DataService } from 'src/app/services/data.service';
 import * as $ from 'jquery';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { of } from 'rxjs';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-user-form',
@@ -12,20 +14,29 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit, AfterViewInit {
- isImageUploaded: Boolean = false;
- dropZone: HTMLElement;
- hide: Boolean = true;
- message: String = 'Already Have Account';
- isProgress: Boolean = false;
- user: User = {};
- cityList: Array<string> = ['KOTA', 'JAIPUR', 'BWM', 'JHALAWAR'];
- userForm: UserForm;
+  isImageUploaded: Boolean = false;
+  dropZone: HTMLElement;
+  hide: Boolean = true;
+  message: String = 'Already Have Account';
+  isProgress: Boolean = false;
+  user: User = {};
+  cityList: Array<string> = ['KOTA', 'JAIPUR', 'BWM', 'JHALAWAR'];
+  userForm: UserForm;
   constructor(public route: ActivatedRoute, public router: Router, public _commonservice: CommonService
     , public _dataservice: DataService, public dialog: MatDialog) {
     this.route.data.subscribe((res) => {
       this.userForm = res.formData;
+      if (this.userForm.formType === 'edit') {
+        this._dataservice.userInfo.subscribe((response: any) => {
+          this.user = response;
+          $('#profileImage').attr('src', response.image);
+        });
+      }
       if (this.userForm.formType === 'signin') {
         this.message = 'Create New Account';
+        if (this._dataservice.isLogin) {
+          this._dataservice.logOut();
+        }
       }
     });
   }
@@ -47,6 +58,8 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     this.isProgress = true;
     if (this.userForm.formType === 'signup') {
       this.signUp();
+    } else if (this.userForm.formType === 'edit') {
+      this.editAccount();
     } else if (this.userForm.formType === 'signin') {
       this.signIn();
     } else if (this.userForm.formType === 'forgetpassword') {
@@ -70,13 +83,24 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     this._commonservice.signIn(this.user).subscribe((res: any) => {
       this.user = {};
       this.isProgress = false;
-      localStorage.setItem('user_token', JSON.stringify(res.token));
-      localStorage.setItem('user_id', JSON.stringify(res.userinfo._id));
-      this._dataservice.isLogin = true;
-      this._dataservice.userInfo = res.userinfo;
-      this.router.navigate(['profile', res.userinfo._id]);
+      localStorage.setItem('user_token', res.token);
+      localStorage.setItem('user_id', res.userinfo._id);
+      this._dataservice.isLogin = of(true);
+      this._dataservice.userInfo = of(res.userinfo);
+      this.router.navigate(['user/profile', res.userinfo._id]);
     }, (error) => {
       this.isProgress = false;
+      console.log(error);
+    });
+  }
+
+  // user info update
+  editAccount() {
+    this.user = _.omit(this.user, ['_id', '__v']);
+    this._commonservice.updateUserInfo(this._dataservice.userInfoInstance._id, this.user).subscribe((res) => {
+      this._dataservice.userDetails.next(res);
+      this.router.navigate(['user/profile', this._dataservice.userInfoInstance._id]);
+    }, (error) => {
       console.log(error);
     });
   }
@@ -93,10 +117,12 @@ export class UserFormComponent implements OnInit, AfterViewInit {
   changeForm() {
     this.isProgress = true;
     if (this.userForm.formType === 'signin') {
-      this.router.navigate(['user/signup']);
+      this.router.navigate(['user/account/signup']);
       this.isProgress = false;
+    } else if (this.userForm.formHeader === 'edit') {
+      this.router.navigate(['user/profile', this._dataservice.userInfoInstance._id]);
     } else {
-      this.router.navigate(['user/signin']);
+      this.router.navigate(['user/account/signin']);
       this.isProgress = false;
     }
   }
@@ -121,6 +147,14 @@ export class UserFormComponent implements OnInit, AfterViewInit {
       };
     };
     window.addEventListener('dragover', function (e: any) {
+      e = e || event;
+      e.preventDefault();
+    }, false);
+    window.addEventListener('ondragenter', function (e: any) {
+      e = e || event;
+      e.preventDefault();
+    }, false);
+    window.addEventListener('ondragleave', function (e: any) {
       e = e || event;
       e.preventDefault();
     }, false);
