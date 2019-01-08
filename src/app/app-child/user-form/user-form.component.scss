@@ -1,10 +1,10 @@
 .container{
    width: 28%;
-   border-radius: 7%;
+   // border-radius: 7%;
    padding: 0%;
 }
 mat-card{
-   border-radius: 7%;
+   // border-radius: 7%;
    padding: 5%;
    padding-bottom: 1%;
 }
@@ -13,6 +13,10 @@ mat-card{
    height: 110px ;
    border-radius: 55px;
    width: 110px ;
+}
+.bar-position{
+   position: relative;
+   top:0;
 }
 mat-card-actions{
    text-align: center;

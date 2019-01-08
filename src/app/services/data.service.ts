@@ -8,11 +8,12 @@ import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
+progressBar: Boolean = false;
 userDetails = new BehaviorSubject<User>({});
 userInfoInstance: User = {};
 userInfo = this.userDetails.asObservable();
-// userInfo: Observable<User> = of({});
-isLogin: Observable<boolean> = of(false);
+isLogin = new BehaviorSubject<boolean>(false);
+login = this.isLogin.asObservable();
 isProfilePage: Boolean = false;
   constructor(private _commonservice: CommonService, private router: Router) {
    }
@@ -20,7 +21,7 @@ isProfilePage: Boolean = false;
   // intialising user info
   intialiseUserInfo(id) {
     this._commonservice.getUserInfo(id).subscribe((response) => {
-      this.isLogin = of(true);
+      this.isLogin.next(true);
       this.userInfoInstance = response;
         this.userDetails.next(response);
     }, (error) => {
@@ -32,7 +33,7 @@ isProfilePage: Boolean = false;
   logOut = () => {
     localStorage.clear();
     this.userInfo = of({});
-    this.isLogin = of(false);
+    this.isLogin.next(false);
     this.router.navigate(['user/account/signin']);
   }
 
@@ -40,7 +41,7 @@ isProfilePage: Boolean = false;
     const id = localStorage.getItem('user_id');
     this._commonservice.deleteUserAccount(id).subscribe((res) => {
       alert('account Removed Successfully');
-      this.router.navigate(['user/account/signin']);
+      this.logOut();
     }, (error) => { console.log(error); });
   }
 }

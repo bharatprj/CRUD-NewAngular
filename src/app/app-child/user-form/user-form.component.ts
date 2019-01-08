@@ -26,17 +26,13 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     , public _dataservice: DataService, public dialog: MatDialog) {
     this.route.data.subscribe((res) => {
       this.userForm = res.formData;
-      if (this.userForm.formType === 'edit') {
-        this._dataservice.userInfo.subscribe((response: any) => {
-          this.user = response;
-          $('#profileImage').attr('src', response.image);
-        });
-      }
       if (this.userForm.formType === 'signin') {
         this.message = 'Create New Account';
-        if (this._dataservice.isLogin) {
-          this._dataservice.logOut();
-        }
+        this._dataservice.login.subscribe((login: any) => {
+          if (login) {
+            this.router.navigate(['homepage']);
+          }
+        });
       }
     });
   }
@@ -50,6 +46,14 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     if (this.userForm.formType === 'signup') {
       this.dropZone = document.getElementById('drop_up');
       this.bindDragDrop();
+    }
+
+    // image change
+    if (this.userForm.formType === 'edit') {
+      this._dataservice.userInfo.subscribe((response: any) => {
+        this.user = response;
+        $('#profileImage').attr('src', response.image);
+      });
     }
   }
 
@@ -85,7 +89,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
       this.isProgress = false;
       localStorage.setItem('user_token', res.token);
       localStorage.setItem('user_id', res.userinfo._id);
-      this._dataservice.isLogin = of(true);
+      this._dataservice.isLogin.next(true);
       this._dataservice.userInfo = of(res.userinfo);
       this.router.navigate(['user/profile', res.userinfo._id]);
     }, (error) => {
@@ -119,7 +123,7 @@ export class UserFormComponent implements OnInit, AfterViewInit {
     if (this.userForm.formType === 'signin') {
       this.router.navigate(['user/account/signup']);
       this.isProgress = false;
-    } else if (this.userForm.formHeader === 'edit') {
+    } else if (this.userForm.formType === 'edit') {
       this.router.navigate(['user/profile', this._dataservice.userInfoInstance._id]);
     } else {
       this.router.navigate(['user/account/signin']);

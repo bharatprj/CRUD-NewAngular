@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './token.interceptor';
 import { AuthGuard } from './auth.guard';
 import { HomepageComponent } from './homepage/homepage.component';
+import { PageNotFoundModule } from './page-not-found/page-not-found.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HomepageComponent } from './homepage/homepage.component';
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+    PageNotFoundModule,
     AppRoutingModule,
     SharedModule
   ],

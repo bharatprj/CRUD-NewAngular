@@ -8,7 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor() {
+  constructor(public _dataservice: DataService, private router: Router) {
+    const id = localStorage.getItem('user_id');
+    if (!id) {
+      this.router.navigate(['user/account/signin']);
+    } else {
+      this._dataservice.intialiseUserInfo(id);
+    }
   }
   ngOnInit(): void {
   }
